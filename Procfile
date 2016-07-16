@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/telegram-bot.jar
+web: java $JAVA_OPTS -jar target/telegram-bot.jar
