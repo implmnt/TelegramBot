@@ -5,8 +5,8 @@ import cc.caucas.bot.telegram.web.model.Message;
 import cc.caucas.bot.telegram.web.model.Update;
 import cc.caucas.bot.telegram.web.service.IdleService;
 import cc.caucas.bot.telegram.web.service.TokenService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/bot")
 public class BotController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BotController.class);
+    private static final Log LOG = LogFactory.getLog(BotController.class);
 
     @Autowired
     private TokenService tokenService;
