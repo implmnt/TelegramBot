@@ -1,10 +1,8 @@
 package cc.caucas.bot.telegram.web;
 
+import cc.caucas.bot.telegram.web.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.PostConstruct;
-import java.util.Objects;
-import java.util.UUID;
 
 /**
  * @author Georgy Davityan
@@ -12,16 +10,12 @@ import java.util.UUID;
 @RestController
 public class TestController {
 
-    public static final String TOKEN = UUID.randomUUID().toString();
-
-    @PostConstruct
-    public void setUp() {
-        System.out.println("Generated token: " + TOKEN);
-    }
+    @Autowired
+    private TokenService tokenService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/hello/{token}")
     public void hello(@PathVariable("token") String token, @RequestBody String update) {
-        if (Objects.equals(TOKEN, token)) {
+        if (tokenService.isValid(token)) {
             System.out.println(update);
         } else {
             System.out.println("Invalid token");
