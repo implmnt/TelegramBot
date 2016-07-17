@@ -1,7 +1,13 @@
 package cc.caucas.bot.telegram.web.service;
 
+import cc.caucas.bot.telegram.core.domain.GroupMember;
+import cc.caucas.bot.telegram.web.model.ChatMember;
 import cc.caucas.bot.telegram.web.model.Message;
+import cc.caucas.bot.telegram.web.model.Result;
+import cc.caucas.bot.telegram.web.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
@@ -16,18 +22,19 @@ import java.util.Map;
  * @author Georgy Davityan
  */
 @Component
-public class TelegramApiServiceBean implements TelegramApiService {
+public class BotServiceBean implements BotService {
 
     private static final String TELEGRAM_API_URL = "https://api.telegram.org/bot{token}/";
 
     private static final String SEND_MESSAGE_METHOD = "sendMessage";
+    private static final String GET_CHAT_MEMBER = "getChatMember?chat_id={chat_id}&user_id={user_id}";
 
 
     private TokenService tokenService;
     private RestTemplate restTemplate;
 
     @Autowired
-    public TelegramApiServiceBean(TokenService tokenService) {
+    public BotServiceBean(TokenService tokenService) {
         this.tokenService = tokenService;
 
         this.restTemplate = new RestTemplate();
@@ -47,6 +54,19 @@ public class TelegramApiServiceBean implements TelegramApiService {
         request.put("text", text);
 
         return this.getRestTemplate().postForObject(url, request, Message.class, tokenService.getToken());
+    }
+
+    @Override
+    public ChatMember getChatMember(Integer chatId, Integer userId) {
+        String url = this.getURLForMethod(GET_CHAT_MEMBER);
+
+        Result<ChatMember> result = this.getRestTemplate().exchange(url,
+                                                                     HttpMethod.GET,
+                                                                     null,
+                                                                     new ParameterizedTypeReference<Result<ChatMember>>() {})
+                                                           .getBody();
+
+        return result.getResult();
     }
 
     private RestTemplate getRestTemplate() {

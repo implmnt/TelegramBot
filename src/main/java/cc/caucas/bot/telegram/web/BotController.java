@@ -1,8 +1,6 @@
 package cc.caucas.bot.telegram.web;
 
-import cc.caucas.bot.telegram.web.model.Idle;
 import cc.caucas.bot.telegram.web.model.Update;
-import cc.caucas.bot.telegram.web.service.IdleService;
 import cc.caucas.bot.telegram.web.service.TelegramFacade;
 import cc.caucas.bot.telegram.web.service.TokenService;
 import org.apache.commons.logging.Log;
@@ -21,18 +19,8 @@ public class BotController {
 
     private static final Log LOG = LogFactory.getLog(BotController.class);
 
-    private IdleService idleService;
     private TokenService tokenService;
     private TelegramFacade telegramFacade;
-
-    @Autowired
-    public BotController(TelegramFacade telegramFacade,
-                         IdleService idleService,
-                         TokenService tokenService) {
-        this.telegramFacade = telegramFacade;
-        this.idleService = idleService;
-        this.tokenService = tokenService;
-    }
 
     @RequestMapping(method = RequestMethod.POST, value = "/hook/{token}")
     public void onUpdate(@PathVariable("token") String token,
@@ -44,9 +32,13 @@ public class BotController {
         }
     }
 
-    @RequestMapping("/idles")
-    public @ResponseBody List<Idle> getIdles() {
-        return idleService.getIdles();
+    @Autowired
+    public void setTelegramFacade(TelegramFacade telegramFacade) {
+        this.telegramFacade = telegramFacade;
     }
 
+    @Autowired
+    public void setTokenService(TokenService tokenService) {
+        this.tokenService = tokenService;
+    }
 }

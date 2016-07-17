@@ -3,6 +3,8 @@ package cc.caucas.bot.telegram.web.service;
 import cc.caucas.bot.telegram.web.model.Message;
 import cc.caucas.bot.telegram.web.model.Update;
 import cc.caucas.bot.telegram.web.service.exception.TelegramBotException;
+import cc.caucas.bot.telegram.web.service.handler.Handler;
+import cc.caucas.bot.telegram.web.service.handler.MessageHandler;
 import cc.caucas.bot.telegram.web.util.UpdateParseException;
 import cc.caucas.bot.telegram.web.util.UpdateParser;
 import cc.caucas.bot.telegram.web.util.UpdateType;
@@ -10,6 +12,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author Georgy Davityan
@@ -19,12 +23,7 @@ public class TelegramFacadeBean implements TelegramFacade {
 
     private static final Log LOG = LogFactory.getLog(TelegramFacadeBean.class);
 
-    private IdleService idleService;
-
-    @Autowired
-    public TelegramFacadeBean(IdleService idleService) {
-        this.idleService = idleService;
-    }
+    private MessageHandler messageHandler;
 
     @Override
     public void execute(Update update) {
@@ -35,7 +34,7 @@ public class TelegramFacadeBean implements TelegramFacade {
             switch (updateType) {
                 case MESSAGE: {
                     Message message = update.getMessage();
-                    idleService.addIdle(message.getFrom());
+                    this.messageHandler.handle(message.getFrom(), message);
                 } break;
 
                 case COMMAND: {
@@ -52,4 +51,8 @@ public class TelegramFacadeBean implements TelegramFacade {
         }
     }
 
+    @Autowired
+    public void setMessageHandler(MessageHandler messageHandler) {
+        this.messageHandler = messageHandler;
+    }
 }

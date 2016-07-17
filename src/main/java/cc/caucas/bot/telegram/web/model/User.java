@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * @author Georgy Davityan
  */
-
 public class User {
 
     private Integer id;

@@ -1,19 +1,12 @@
 package cc.caucas.bot.telegram.web.model;
 
-import java.time.LocalDate;
-
 /**
  * @author Georgy Davityan
  */
-public class Idle {
+public class ChatMember {
 
     private User user;
-    private Long silenceTime;
-
-    public Idle(User user, Long silenceTime) {
-        this.user = user;
-        this.silenceTime = silenceTime;
-    }
+    private String status;
 
     public User getUser() {
         return user;
@@ -23,12 +16,12 @@ public class Idle {
         this.user = user;
     }
 
-    public Long getSilenceTime() {
-        return silenceTime;
+    public String getStatus() {
+        return status;
     }
 
-    public void setSilenceTime(Long silenceTime) {
-        this.silenceTime = silenceTime;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
@@ -36,9 +29,9 @@ public class Idle {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Idle idle = (Idle) o;
+        ChatMember that = (ChatMember) o;
 
-        return user.equals(idle.user);
+        return user.equals(that.user);
 
     }
 
