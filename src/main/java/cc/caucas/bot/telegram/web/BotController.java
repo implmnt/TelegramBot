@@ -1,9 +1,9 @@
 package cc.caucas.bot.telegram.web;
 
 import cc.caucas.bot.telegram.web.model.Idle;
-import cc.caucas.bot.telegram.web.model.Message;
 import cc.caucas.bot.telegram.web.model.Update;
 import cc.caucas.bot.telegram.web.service.IdleService;
+import cc.caucas.bot.telegram.web.service.TelegramFacade;
 import cc.caucas.bot.telegram.web.service.TokenService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,21 +21,26 @@ public class BotController {
 
     private static final Log LOG = LogFactory.getLog(BotController.class);
 
-    @Autowired
-    private TokenService tokenService;
-    @Autowired
     private IdleService idleService;
+    private TokenService tokenService;
+    private TelegramFacade telegramFacade;
+
+    @Autowired
+    public BotController(TelegramFacade telegramFacade,
+                         IdleService idleService,
+                         TokenService tokenService) {
+        this.telegramFacade = telegramFacade;
+        this.idleService = idleService;
+        this.tokenService = tokenService;
+    }
 
     @RequestMapping(method = RequestMethod.POST, value = "/hook/{token}")
     public void onUpdate(@PathVariable("token") String token,
                          @RequestBody Update update) {
         if (tokenService.isValid(token)) {
-            Message message = update.getMessage();
-            if (message != null) {
-                idleService.addIdle(message.getFrom());
-            }
+            telegramFacade.execute(update);
         } else {
-            LOG.warn("Invalid token");
+            LOG.warn("Invalid Token(token='" + token + "')");
         }
     }
 
