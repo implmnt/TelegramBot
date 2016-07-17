@@ -1,0 +1,12 @@
+language: java
+
+jdk:
+    - oraclejdk8
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: JiFtvqJPlK/E5q3Bioaf3whwjBJArBxKilUVRBXZsjZtBA7YOt5K8uklHK2oOscd2PRVTWlMNCioYBXPxreACZuBw0GRboctgyGGo08c908zaLPV2bh6QsMHofits7MvWJhiFx8ii1nuDBVdS4jTwlafX1fD93zNOMYL71Qk48v4FO+aViI1NZXUke+c2fLwNIk4eGyfABOQ88cCatr0c/XvXR7Ks0oBFh/9D8rDulEHHMKJXyU4bSNbqFdMysukh0jGaO/rlQaFBNTQ84YMZZIoCcmZVzWnJ8wbHjPvJ489yJgCIsZKOn/mKwNqiCpe2Fwxzn1AII1LzAwstTa0hQ+scc1gzVQ47PTxdGH/jASOIOwuNp7QJjgGzOY3899QFbaPPmitPKBgd3jCPB0ggAGiRVlrSMjDLQ4Afmo420bvR78F8qZK5AYB3q/HE1Akn79kxeE9H4PWM0qXiI1O3m2mEXV6mPGtpuX7mw9mOtIEoBXgidNSGhiO1nQj19Pms4r9p8N62KCra8MqPC3pI5eczCdQ52zimqwp1ErGs7JAG+wR4UVGX6W/4+aecKHI+kikSZKEGL3JMSBkslawjfwY2ceQnGv2ArMz9U1Y9LPdEFF7csRUY4j8ZRwJmryP00xIS1L8cfru8EpE8V0R2hN1sXsT6yIW0cpUxmw6CGU=
+  app: badmotherfucker
+  on:
+    all_branches: true
